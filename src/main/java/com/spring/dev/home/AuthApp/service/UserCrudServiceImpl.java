@@ -28,5 +28,17 @@ public class UserCrudServiceImpl implements IUserCrudService {
 		}
 		return users ;
 	}
+
+	@Override
+	public User addUser(User u) {
+		// TODO Auto-generated method stub
+		return userRepository.save(u);
+	}
+
+	@Override
+	public User retrieveUser(String id) {
+		// TODO Auto-generated method stub
+		return (User) userRepository.findAll();
+	}
 	
 }

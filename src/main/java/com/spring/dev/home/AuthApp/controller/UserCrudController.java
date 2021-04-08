@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,4 +25,11 @@ public class UserCrudController {
 	List<User> list = userService.retrieveAllUsers();
 	return list;
 	}
+	@PostMapping("/add-user")
+	@ResponseBody
+	public User addUser(@RequestBody User u) {
+	User user = userService.addUser(u);
+	return user;
+	}
+	
 }
