@@ -72,23 +72,12 @@ public class AuthControllerAdvice {
         return new ApiResponse(false, data, ex.getClass().getName(), resolvePathFromWebRequest(request));
     }
 
-    /**
-     * Utility Method to generate localized message for a list of field errors
-     *
-     * @param allErrors the field errors
-     * @return the list
-     */
+    
     private List<String> processAllErrors(List<ObjectError> allErrors) {
         return allErrors.stream().map(this::resolveLocalizedErrorMessage).collect(Collectors.toList());
     }
 
-    /**
-     * Resolve localized error message. Utility method to generate a localized error
-     * message
-     *
-     * @param objectError the field error
-     * @return the string
-     */
+    
     private String resolveLocalizedErrorMessage(ObjectError objectError) {
         Locale currentLocale = LocaleContextHolder.getLocale();
         String localizedErrorMessage = messageSource.getMessage(objectError, currentLocale);
