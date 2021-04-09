@@ -28,8 +28,8 @@ public class DeviceInfo {
     private String deviceId;
 
     @NotNull(message = "Device type cannot be null")
-    @ApiModelProperty(value = "Device type Android/iOS", required = true, dataType = "string", allowableValues =
-            "DEVICE_TYPE_ANDROID, DEVICE_TYPE_IOS")
+    @ApiModelProperty(value = "Device type DESKTOP/MOBILE", required = true, dataType = "string", allowableValues =
+            "DEVICE_TYPE_DESKTOP, DEVICE_TYPE_MOBILE")
     private DeviceType deviceType;
 
     @NullOrNotBlank(message = "Device notification token can be null but not blank")

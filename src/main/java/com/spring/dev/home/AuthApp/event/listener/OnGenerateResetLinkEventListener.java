@@ -40,19 +40,14 @@ public class OnGenerateResetLinkEventListener implements ApplicationListener<OnG
         this.mailService = mailService;
     }
 
-    /**
-     * As soon as a forgot password link is clicked and a valid email id is entered,
-     * Reset password link will be sent to respective mail via this event
-     */
+    
     @Override
     @Async
     public void onApplicationEvent(OnGenerateResetLinkEvent onGenerateResetLinkMailEvent) {
         sendResetLink(onGenerateResetLinkMailEvent);
     }
 
-    /**
-     * Sends Reset Link to the mail address with a password reset link token
-     */
+    
     private void sendResetLink(OnGenerateResetLinkEvent event) {
         PasswordResetToken passwordResetToken = event.getPasswordResetToken();
         User user = passwordResetToken.getUser();
