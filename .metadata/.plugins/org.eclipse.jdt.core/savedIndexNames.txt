@@ -1,0 +1,4 @@
+INDEX VERSION 1.130+C:\Users\abdel\OneDrive\Bureau\Jwt-Spring-Security-JPA-master\.metadata\.plugins\org.eclipse.jdt.core
+1879564852.index
+165978110.index
+2513304217.index
