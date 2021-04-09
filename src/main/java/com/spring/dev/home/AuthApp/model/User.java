@@ -37,6 +37,8 @@ import java.util.Set;
 @Entity(name = "USER")
 public class User extends DateAudit {
 
+	private static final long serialVersionUID = 1L;
+	
     @Id
     @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
