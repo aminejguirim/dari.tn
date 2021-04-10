@@ -3,6 +3,7 @@ package com.spring.dev.home.AuthApp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.dev.home.AuthApp.model.User;
 import com.spring.dev.home.AuthApp.service.UserCrudServiceImpl;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 public class UserCrudController {
 	
@@ -24,6 +27,8 @@ public class UserCrudController {
 	UserCrudServiceImpl service;
 	
 	@PostMapping("/add-user")
+	@PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "Returns the current user profile")
 	@ResponseBody
 	public User addUser(@RequestBody User u) {
 	User user = service.addUser(u);
@@ -32,6 +37,8 @@ public class UserCrudController {
 
 // http://localhost:4023/SpringMVC/servlet/retrieve-all-users
 	@GetMapping("/retrieve-all-users")
+	@PreAuthorize("hasRole('ADMIN')")
+    @ApiOperation(value = "Returns the list of configured admins. Requires ADMIN Access")
 	@ResponseBody
 	public List<User> getUsers() {
 	List<User> list = service.retrieveAllUsers();
@@ -40,6 +47,8 @@ public class UserCrudController {
 	}
 	// http://localhost:4023/SpringMVC/servlet/modify-user
 	@PutMapping("/modify-user")
+	@PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "Returns the current user profile")
 	@ResponseBody
 	public User modifyUser(@RequestBody User user) {
 	return service.updateUser(user);
@@ -47,8 +56,10 @@ public class UserCrudController {
 	
 	// http://localhost:4023/SpringMVC/servlet/remove-user/{user-id}
 	@DeleteMapping("/remove-user/{user-id}")
+	@PreAuthorize("hasRole('USER')")
+    @ApiOperation(value = "Returns the current user profile")
 	@ResponseBody
-	public void removeUser(@PathVariable("USER_ID") Long userId) {
+	public void removeUser(@PathVariable("user_id") Long userId) {
 	service.deleteUserById(userId);
 	}
 }
