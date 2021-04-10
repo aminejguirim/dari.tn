@@ -98,6 +98,28 @@ public class UserCrudController {
 	userRepository.delete(user_new);
 	
 	}
+	
+	@PutMapping("/updateUser/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
+	@ResponseBody
+	public User updateUser(@PathVariable(value="id") Long id, @RequestBody User userDetails)
+	{
+	Optional<User> user = userRepository.findById(id);
+	User user_new=user.get();
+	user_new.setEmail(userDetails.getEmail());
+	user_new.setUsername(userDetails.getUsername());
+	user_new.setFirstName(userDetails.getFirstName());
+	return userRepository.save(user_new);
+
+	}
+	@PostMapping("/addUser")
+	@PreAuthorize("hasRole('ADMIN')")
+	@ResponseBody
+	public User addBook(@RequestBody User user)
+	{
+	return userRepository.save(user);
+	}
+	
 	}
 
 
