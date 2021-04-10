@@ -105,7 +105,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js").permitAll()
-                .antMatchers("/**/api/auth/**","/retrieve-all-users","/add-user").permitAll()
+                .antMatchers("/**/api/auth/**","/add-user").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

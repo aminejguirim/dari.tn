@@ -6,7 +6,7 @@ import com.spring.dev.home.AuthApp.model.User;
 
 public interface IUserCrudService {
 	
-	List<User> retrieveAllUsers();
+	public List<User> retrieveAllUsers();
 	
 	User addUser(User u);
 	
