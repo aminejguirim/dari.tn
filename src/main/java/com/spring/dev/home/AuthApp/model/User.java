@@ -108,6 +108,9 @@ public class User extends DateAudit {
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
 	private List<Wish> wish;
 	
+	@OneToMany(targetEntity=Reclamation.class, mappedBy="user")
+	private List<Reclamation> reclamations = new ArrayList<>();
+	
 	public void addWish(Wish W)
 	{
 		W.setUser(this);
