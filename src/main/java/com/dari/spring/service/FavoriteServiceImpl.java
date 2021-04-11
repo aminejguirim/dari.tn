@@ -1,42 +1,76 @@
 package com.dari.spring.service;
 
+
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dari.spring.entity.Client;
 import com.dari.spring.entity.Favorite;
 import com.dari.spring.entity.Property;
+import com.dari.spring.entity.User;
 import com.dari.spring.repository.FavoriteRepository;
+import com.dari.spring.repository.PropertyRepository;
+import com.dari.spring.repository.UserRepository;
+
+
+
 
 @Service
 public class FavoriteServiceImpl implements IFavoriteService {
+	
+	@Autowired
+	FavoriteRepository favo;
 
 	@Autowired
-	FavoriteRepository favoriterepository;
+	UserRepository us;
 
+	@Autowired
+	PropertyRepository prop;
 
-//	@Autowired
-//	AssetAdvRepository AssetAdvRepository;
+	// ajout favorite
+		@Override
+		public boolean ajouterFavorite(Integer user, Integer property) {
+			Property P = prop.findById(property).get();
+			User U = (User) us.findById(user).get();
+			Favorite f = new Favorite();
+			f.setUser(U);
+			f.setProperty(P);
 
-	@Override
-	public void ajouterFavorite(Client user, Property property) {
-		Favorite FavoriteEntity = new Favorite();
-		FavoriteEntity.setProperty(property);
-		FavoriteEntity.setUser(user);
-		favoriterepository.save(FavoriteEntity);
-	}
+			if (this.rechercherFavorite(f) == false) {
+				U.addFavorite(f);
+				favo.save(f);
+				return true;
+			}
 
-	public void deleteFavoriteById(int FavoriteId) {
+			return false;
+		}
+		
+		// Rechercher Favorites
+		@Override
+		public boolean rechercherFavorite(Favorite f) {
+			Favorite search = favo.findfavoritenotbyid(f.getUser(), f.getProperty()).orElse(null);
+			if (search != null)
+				return true;
+			else
+				return false;
+		}
 
-		Favorite FavoriteEntity = favoriterepository.findById(FavoriteId).get();
-		favoriterepository.delete(FavoriteEntity);
+		@Override
+		public void deleteFavoriteById(int favoriteId) {
+			favo.deleteById(favoriteId);
+			
+		}
 
-	}
-
-	public List<Favorite> getAllFavorites() {
-		return (List<Favorite>) favoriterepository.findAll();
-	}
+		@Override
+		public List<Favorite> getAllFavorites(int id) {
+			User u = us.findById(id).get();
+			return u.getFavoris();
+		}
+		
+		
+		
+		
 
 }

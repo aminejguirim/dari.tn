@@ -1,16 +1,19 @@
 package com.dari.spring.service;
 
-import com.dari.spring.entity.Client;
+
+import java.util.List;
+
 import com.dari.spring.entity.Favorite;
 import com.dari.spring.entity.Property;
-import java.util.List;
+
+
+
 public interface IFavoriteService {
-
 	
-	
-	public void ajouterFavorite(Client user, Property property);
-
+	public boolean ajouterFavorite(Integer user, Integer property);
+	public boolean rechercherFavorite(Favorite f);
 	public void deleteFavoriteById(int FavoriteId);
+	public List<Favorite> getAllFavorites(int id);
+	
 
-	public List<Favorite> getAllFavorites();
 }
