@@ -1,28 +1,22 @@
 package com.spring.dev.home.AuthApp.model;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
+import com.spring.dev.home.AuthApp.model.PropertyCategory;
+import com.spring.dev.home.AuthApp.model.PropertyType;
 
 @Entity
 public class Property implements Serializable {
@@ -39,7 +33,6 @@ public class Property implements Serializable {
 	
 	private String ref;
 	private String description;
-	
 	
 	@Enumerated(EnumType.STRING)
 	private PropertyType type;
@@ -67,16 +60,6 @@ public class Property implements Serializable {
 	
 	private String availability; // "Available" or "Sold" or "Rented"
 	private boolean status; // True = administrator confirmed it; False= Administrator refused the adv
-	
-	@OneToOne(mappedBy="property")
-	private Localisation localisation;
-	
-	@OneToMany(mappedBy = "property" , fetch=FetchType.LAZY)   
-    private List<Visit> visit = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "property", fetch = FetchType.LAZY)
-	private List<VisitTime> time = new ArrayList<>();
-	
 	public int getId() {
 		return id;
 	}
@@ -220,57 +203,10 @@ public class Property implements Serializable {
 	public Property() {
 		super();
 	}
-	
-	
-	public Property(int id) {
-		super();
-		this.id = id;
-	}
-
-	
-	public Localisation getLocalisation() {
-		return localisation;
-	}
-	public void setLocalisation(Localisation localisation) {
-		this.localisation = localisation;
-	}
-	
-	
-	@JsonManagedReference(value="visit-property")
-	public List<Visit> getVisit() {
-		return visit;
-	}
-	public void setVisit(List<Visit> visit) {
-		this.visit = visit;
-	}
-	
-	@JsonManagedReference(value="property-time")
-	public List<VisitTime> getTime() {
-		return time;
-	}
-	public void setTime(List<VisitTime> time) {
-		this.time = time;
-	}
-	
-	
-	public void addVisit(Visit visit)
-	{
-		this.visit.add(visit);
-		visit.setProperty(this);
-	}
-	
-	public void addTime(VisitTime vit)
-	{
-		this.time.add(vit);
-		vit.setProperty(this);
-	}
-	
-	
-	
 	public Property(int id, User user, String ref, String description, PropertyType type, Date addedDate, float price,
 			float surface, String street, String city, String state, String postalCode, int nbrRooms, int nbrFloor,
 			int floor, int nbrBathrooms, boolean furnished, boolean garage, boolean parking, boolean pool,
-			PropertyCategory category, String availability, boolean status,Localisation localisation) {
+			PropertyCategory category, String availability, boolean status) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -295,9 +231,6 @@ public class Property implements Serializable {
 		this.category = category;
 		this.availability = availability;
 		this.status = status;
-		this.localisation = localisation;
 	}
 	
-	
-
 }

@@ -14,12 +14,14 @@
 package com.spring.dev.home.AuthApp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.spring.dev.home.AuthApp.model.Property;
 import com.spring.dev.home.AuthApp.model.User;
 
 import java.util.Optional;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);

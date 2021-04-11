@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.dev.home.AuthApp.model.Favorite;
+import com.spring.dev.home.AuthApp.model.Property;
 import com.spring.dev.home.AuthApp.service.IFavoriteService;
 
 
@@ -47,6 +48,11 @@ public class FavoriteController {
 		// http://localhost:8081/Dari/servlet/User/{id}/Favorite/Notification
 		// notification changed favorite assets
 		
-		
+		// http://localhost:8081/Dari/servlet/User/{id}/Favorite/Notification
+				// notification changed favorite assets
+				@GetMapping("/User/{id}/Favorite/Notification")
+				public List<Favorite> getfavoriteswhoseassetgotupdated(@PathVariable("id") Property P) {
+					return FavoriteService.getfavoriteswhoseassetgotupdated(P);
+				}
 		
 }

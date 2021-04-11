@@ -1,7 +1,4 @@
-package com.spring.dev.home.AuthApp.service;
-
-
-
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +10,9 @@ import com.spring.dev.home.AuthApp.model.User;
 import com.spring.dev.home.AuthApp.repository.FavoriteRepository;
 import com.spring.dev.home.AuthApp.repository.PropertyRepository;
 import com.spring.dev.home.AuthApp.repository.UserRepository;
-
-
-
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 
 
 
@@ -71,4 +68,38 @@ public class FavoriteServiceImpl implements IFavoriteService {
 			return u.getFavoris();
 		}
 		
+		public void sendSms(String to, String from, String body) {
+
+			try {
+				Twilio.init("AC4a30225de4e58465a1bb6e3a9b0348d5", "36f1f7e143fd687d791e1db7d3fbeefc");
+				Message message = Message.creator(new PhoneNumber(to), new PhoneNumber(from), body).create();
+
+			} catch (Exception e) {
+
+				e.printStackTrace();
+
+			}
+
+		}
+		
+		// Favorites Modified (for notification)
+		@Override
+		public List<Favorite> getfavoriteswhoseassetgotupdated(Property P) {
+			List<Favorite> liste = (List<Favorite>) favo.findfavsbyproperty(P);
+			List<User> user = new ArrayList<User>();
+
+			for (int i = 0; i < liste.size(); i++) {
+				user.add(liste.get(i).getUser());
+				
+				String s = "+216" + liste.get(i).getUser().getPhoneNumber();
+
+				sendSms(s, "+14044917812", "A favorite asset has been changed!");
+
+			}
+
+			return liste;
+		}
+		
+		
+
 }
