@@ -15,6 +15,7 @@ package com.spring.dev.home.AuthApp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.spring.dev.home.AuthApp.model.Property;
 import com.spring.dev.home.AuthApp.model.User;
 
 import java.util.Optional;
@@ -28,4 +29,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     Boolean existsByUsername(String username);
+
+	Optional<Property> findById(Integer user);
 }
