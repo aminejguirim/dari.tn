@@ -15,6 +15,7 @@ package com.spring.dev.home.AuthApp.model;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.dev.home.AuthApp.model.audit.DateAudit;
 import com.spring.dev.home.AuthApp.validation.annotation.NullOrNotBlank;
 
@@ -28,10 +29,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "USER")
@@ -61,10 +66,26 @@ public class User extends DateAudit {
     @Column(name = "FIRST_NAME")
     @NullOrNotBlank(message = "First name can not be blank")
     private String firstName;
+    
+    @Column(name = "ADDRESSE")
+    @NullOrNotBlank(message = "adresse can not be blank")
+    private String adresse;
+    
+    @Column(name = "telephone")
+    @NullOrNotBlank(message = "telephone can not be blank")
+    private String telephone;
 
     @Column(name = "LAST_NAME")
     @NullOrNotBlank(message = "Last name can not be blank")
     private String lastName;
+    
+    @Column(name = "phone_Number")
+    @NullOrNotBlank(message = "Last name can not be blank")
+    private String phoneNumber;
+    
+    @Column(name = "postal_Code")
+    @NullOrNotBlank(message = "Last name can not be blank")
+    private String postalCode;
 
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean active;
@@ -77,6 +98,27 @@ public class User extends DateAudit {
 
     @Column(name = "IS_EMAIL_VERIFIED", nullable = false)
     private Boolean isEmailVerified;
+    
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="user")
+	private List<Property> property;
+	
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
+	private List<Favorite> favoris=new ArrayList<Favorite>();
+
+	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
+	private List<Wish> wish;
+	
+	public void addWish(Wish W)
+	{
+		W.setUser(this);
+		this.wish.add(W);
+	}
+	
+	public void removeWish(Wish W)
+	{
+		W.setUser(null);
+		this.wish.remove(W);
+	}
 
     public User() {
         super();
@@ -94,7 +136,59 @@ public class User extends DateAudit {
         isEmailVerified = user.getEmailVerified();
     }
 
-    public void addRole(Role role) {
+    public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getPostalCode() {
+		return postalCode;
+	}
+
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+
+	public User(Long id, @NotBlank(message = "User email cannot be null") String email, String username,
+			@NotNull(message = "Password cannot be null") String password, String firstName, String adresse,
+			String telephone, String lastName, String phoneNumber, String postalCode, Boolean active, Set<Role> roles,
+			Boolean isEmailVerified) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.firstName = firstName;
+		this.adresse = adresse;
+		this.telephone = telephone;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+		this.postalCode = postalCode;
+		this.active = active;
+		this.roles = roles;
+		this.isEmailVerified = isEmailVerified;
+	}
+
+	public String getAdresse() {
+		return adresse;
+	}
+
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public void addRole(Role role) {
         roles.add(role);
         role.getUserList().add(this);
     }
@@ -185,9 +279,56 @@ public class User extends DateAudit {
     }
 
     @Override
-    public String toString() {
-        return "User{" + "id=" + id + ", email='" + email + '\'' + ", username='" + username + '\'' + ", password='"
-                + password + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", active="
-                + active + ", roles=" + roles + ", isEmailVerified=" + isEmailVerified + '}';
-    }
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", username=" + username + ", password=" + password
+				+ ", firstName=" + firstName + ", adresse=" + adresse + ", telephone=" + telephone + ", lastName="
+				+ lastName + ", phoneNumber=" + phoneNumber + ", postalCode=" + postalCode + ", active=" + active
+				+ ", roles=" + roles + ", isEmailVerified=" + isEmailVerified + "]";
+	}
+    
+    public List<Property> getProperty() {
+		return property;
+	}
+
+
+
+
+	public void setProperty(List<Property> property) {
+		this.property = property;
+	}
+	
+	public void addProperty(Property aa)
+	{
+		this.property.add(aa);
+		aa.setUser(this);
+	}
+	
+	@JsonManagedReference(value="user-favoris")
+	public List<Favorite> getFavoris() {
+		return favoris;
+	}
+
+	public void setFavoris(List<Favorite> favoris) {
+		this.favoris = favoris;
+	}
+
+
+
+	@JsonManagedReference(value="user-wish")
+	public List<Wish> getWish() {
+		return wish;
+	}
+
+	public void setWish(List<Wish> wish) {
+		this.wish = wish;
+	}
+	
+	
+	public void addFavorite(Favorite F)
+	{
+		F.setUser(this);
+		this.favoris.add(F);
+	}
+
+
 }

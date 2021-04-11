@@ -119,7 +119,6 @@ public class UserCrudController {
 	{
 	return userRepository.save(user);
 	}
-	
 	}
 
 
