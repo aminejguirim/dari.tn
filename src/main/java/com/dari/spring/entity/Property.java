@@ -19,7 +19,7 @@ import javax.persistence.FetchType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.dari.spring.entity.Localisation;
-import com.dari.spring.entity.Picture;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -78,8 +78,7 @@ public class Property implements Serializable {
 	@OneToMany(mappedBy = "property", fetch = FetchType.LAZY)
 	private List<VisitTime> time = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "property" , fetch=FetchType.LAZY)   
-    private List<Picture> picture = new ArrayList<>();
+	
 	
 	
 	public int getId() {
@@ -270,21 +269,6 @@ public class Property implements Serializable {
 		vit.setProperty(this);
 	}
 	
-	@JsonManagedReference(value="picture-property")
-	public List<Picture> getPicture() {
-		return picture;
-	}
-	
-	public void setPicture(List<Picture> picture) {
-		this.picture = picture;
-	}
-	
-	
-	public void addPicture(Picture picture)
-	{
-		this.picture.add(picture);
-		picture.setProperty(this);
-	}
 	
 	
 	public Property(int id, User user, String ref, String description, PropertyType type, Date addedDate, float price,
