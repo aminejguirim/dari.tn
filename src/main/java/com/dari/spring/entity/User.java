@@ -51,20 +51,7 @@ public class User implements Serializable {
 	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
 	private List<Favorite> favoris=new ArrayList<Favorite>();
 
-	@OneToMany(cascade=CascadeType.ALL,mappedBy="user")
-	private List<Wish> wish;
 	
-	public void addWish(Wish W)
-	{
-		W.setUser(this);
-		this.wish.add(W);
-	}
-	
-	public void removeWish(Wish W)
-	{
-		W.setUser(null);
-		this.wish.remove(W);
-	}
 
 
 
@@ -208,14 +195,6 @@ public class User implements Serializable {
 
 
 
-	@JsonManagedReference(value="user-wish")
-	public List<Wish> getWish() {
-		return wish;
-	}
-
-	public void setWish(List<Wish> wish) {
-		this.wish = wish;
-	}
 	
 
 

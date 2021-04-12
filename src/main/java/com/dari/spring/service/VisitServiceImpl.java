@@ -52,8 +52,8 @@ public class VisitServiceImpl implements IVisitService {
 		v.setTime(vt);
 		p.addVisit(v);
 		vis.save(v);
-		sendSimpleMessage(v.getClient().getEmail(), "Appointmnet  created", "Your appointment has been approved, \n "
-				+ "Details: "+ "Date : "+v.getDate()+" \n Place: "+v.getPlace());
+		//sendSimpleMessage(v.getClient().getEmail(), "Appointmnet  created", "Your appointment has been approved, \n "
+				//+ "Details: "+ "Date : "+v.getDate()+" \n Place: "+v.getPlace());
 		
 	}
 	

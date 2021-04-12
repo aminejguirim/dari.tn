@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,8 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dari.spring.entity.Property;
+import com.dari.spring.entity.User;
 import com.dari.spring.entity.Visit;
 import com.dari.spring.entity.VisitTime;
+import com.dari.spring.repository.PropertyRepository;
+import com.dari.spring.repository.UserRepository;
 import com.dari.spring.service.VisitServiceImpl;
 
 
@@ -28,6 +34,15 @@ public class VisitController {
 	@Autowired
 	VisitServiceImpl vs;
 	
+	@Autowired
+	PropertyRepository pp;
+	
+	@Autowired
+	UserRepository uu ;
+	
+	@Autowired
+	private JavaMailSender emailSender;
+	
 	//http://localhost:8082/Dari/servlet/Property/Visit/addVisit/{idproperty}/{date}/{client}/{time}
 		@PostMapping("/Property/Visit/addVisit/{idproperty}/{client}/{time}")
 		@ResponseBody
@@ -35,15 +50,32 @@ public class VisitController {
 														
 														@PathVariable("client") int client,
 														@PathVariable("time") int visits) throws ParseException
+		                                                
 		{
 			
-			
-			
+				
+			User u = uu.findById(client).get();
+			Property p = pp.findById(idproperty).get();
 
+			
 			vs.createVisit(idproperty,client,visits);
+			
+			sendSimpleMessage(p.getUser().getEmail(), "Visit", "you have a visit from "+u.getFirstName());
+			
 			return new ResponseEntity<>("Appointment Added successfully.", HttpStatus.CREATED);
 			
 		}
+		
+		public void sendSimpleMessage(String to, String subject, String text) {
+
+	        SimpleMailMessage message = new SimpleMailMessage(); 
+	        message.setFrom("daritn4@gmail.com");
+	        message.setTo(to); 
+	        message.setSubject(subject); 
+	        message.setText(text);
+	        emailSender.send(message);
+
+	    }
 		
 		//http://localhost:8082/Dari/servlet/Asset/RDV/{id}/Modify/{date}/{place}
 				@PutMapping("Asset/RDV/{id}/Modify/{place}")
