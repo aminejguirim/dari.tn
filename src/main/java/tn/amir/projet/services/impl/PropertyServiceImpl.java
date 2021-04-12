@@ -95,19 +95,6 @@ public class PropertyServiceImpl implements IPropertyService {
 		
 		
 		
-		@Override
-		public double averagepricebystate(String state) {
-			List<Property> liste = aar.findByStateAndAvailabilityAndStatusTrue(state, "Available");
-			double moyenne = 0;
-			double prix = 0;
-			int number = liste.size();
-			for (int i = 0; i < number; i++) {
-				prix = prix + liste.get(i).getPrice();
-			}
-
-			moyenne = prix / number;
-			return moyenne;
-		}
 		
 		///////////////////////////////////// Price /////////////////////////////////////////////
 		
@@ -193,6 +180,74 @@ public class PropertyServiceImpl implements IPropertyService {
 			return aar.findByNbrRoomsAndNbrFloorAndNbrBathroomsAndAvailabilityAndStatusTrue(nbrRooms, nbrFloor,
 					nbrBathrooms, "Available");
 		}
+	    ////////////////////////////////////// Statistic ////////////////////////////////////////////////
+		
+		@Override
+		public double averagepricebystate(String state) {
+			List<Property> liste = aar.findByStateAndAvailabilityAndStatusTrue(state, "Available");
+			double moyenne = 0;
+			double prix = 0;
+			int number = liste.size();
+			for (int i = 0; i < number; i++) {
+				prix = prix + liste.get(i).getPrice();
+			}
+
+			moyenne = prix / number;
+			return moyenne;
+		}
+		
+		
+		@Override
+		public double averagepricebycity(String city) {
+			List<Property> liste = aar.findByCityAndAvailabilityAndStatusTrue(city, "Available");
+			double moyenne = 0;
+			double prix = 0;
+			int number = liste.size();
+			for (int i = 0; i < number; i++) {
+				prix = prix + liste.get(i).getPrice();
+			}
+
+			moyenne = prix / number;
+			return moyenne;
+		}
+		
+		
+		
+		@Override
+		public double averagesurfacebystate(String state) {
+			List<Property> liste = aar.findByStateAndAvailabilityAndStatusTrue(state, "Available");
+			double moyenne = 0;
+			double prix = 0;
+			int number = liste.size();
+			for (int i = 0; i < number; i++) {
+				prix = prix + liste.get(i).getSurface();
+			}
+
+			moyenne = prix / number;
+			return moyenne;
+		}
+		
+		
+		@Override
+		public double averagesurfacebycity(String city) {
+			List<Property> liste = aar.findByCityAndAvailabilityAndStatusTrue(city, "Available");
+			double moyenne = 0;
+			double prix = 0;
+			int number = liste.size();
+			for (int i = 0; i < number; i++) {
+				prix = prix + liste.get(i).getSurface();
+			}
+
+			moyenne = prix / number;
+			return moyenne;
+		}
+		
+		
+		@Override
+		public double pricepermeterstate(String state) {
+			return averagepricebystate(state) / averagesurfacebystate(state);
+		}
+
 
 
 }

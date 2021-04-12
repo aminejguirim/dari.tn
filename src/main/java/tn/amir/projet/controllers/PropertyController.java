@@ -119,13 +119,6 @@ public class PropertyController {
 		
 		
 		
-		// http://localhost:8082/Dari/servlet/assetadvs/{state}/averageprice
-		// general average price per state
-		@GetMapping("/assetadvs/{state}/averageprice")
-		public double averagepricebystate(@PathVariable("state") String state) {
-			return aas.averagepricebystate(state);
-		}
-		
 		public void sendSms(String to, String from, String body) {
 
 			try {
@@ -277,6 +270,39 @@ public class PropertyController {
 				@PathVariable("nbfloor") int nbfloor, @PathVariable("nbbroom") int nbbroom) {
 			return aas.findByNbrRoomsAndNbrFloorAndNbrBathroomsAndStatusTrue(nbrooms, nbfloor, nbbroom);
 		}
-	
+		
+	    ////////////////////////////////////// Statistic ////////////////////////////////////////////////
+		
+		// http://localhost:8088/Dari/servlet/property/{state}/averageprice
+		@GetMapping("/property/{state}/averageprice")
+		public double averagepricebystate(@PathVariable("state") String state) {
+			return aas.averagepricebystate(state);
+		}
+		
+		// http://localhost:8088/Dari/servlet/property/{city}/averageprice
+		@GetMapping("/property/{city}/averageprice")
+		public double averagepricebycity(@PathVariable("city") String city) {
+			return aas.averagepricebycity(city);
+		}
+		
+		
+		// http://localhost:8088/Dari/servlet/property/{state}/averagesurface
+		@GetMapping("/property/{state}/averagesurface")
+		public double averagesurfacebystate(@PathVariable("state") String state) {
+			return aas.averagesurfacebystate(state);
+		}
+		
+		// http://localhost:8088/Dari/servlet/property/{city}/averagesurface
+		@GetMapping("/property/{city}/averagesurface")
+		public double averagesurfacebycity(@PathVariable("city") String city) {
+			return aas.averagesurfacebycity(city);
+		}
+		
+		
+		// http://localhost:8088/Dari/servlet/property/{state}/pricepermeter
+		@GetMapping("/property/{state}/pricepermeter")
+		public double pricepermeterstate(@PathVariable("state") String state) {
+			return aas.pricepermeterstate(state);
+		}
 
 }

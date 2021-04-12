@@ -15,7 +15,6 @@ public interface IPropertyService {
 	public Property findpropertybyid(int id);
 	
 	
-	public double averagepricebystate(String state);
 	
 	////////////////////////////////////////// Price ////////////////////////////////////////////////
 	
@@ -52,5 +51,15 @@ public interface IPropertyService {
 	public List<Property> findByNbrRoomsAndStatusTrueOrderByPriceDesc(int nbrRooms);
 	
 	public List<Property> findByNbrRoomsAndNbrFloorAndNbrBathroomsAndStatusTrue(int nbrRooms,int nbrFloor,int nbrBathrooms);
+	
+    ////////////////////////////////////// Statistic ////////////////////////////////////////////////
+	
+	public double averagepricebystate(String state);
+	public double averagepricebycity(String city);
+	
+	public double averagesurfacebystate(String state);
+	public double averagesurfacebycity(String city);
+	
+	public double pricepermeterstate(String state);
 
 }
