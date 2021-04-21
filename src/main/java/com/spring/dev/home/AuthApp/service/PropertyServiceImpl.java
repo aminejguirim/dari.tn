@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.dev.home.AuthApp.model.Property;
+import com.spring.dev.home.AuthApp.model.User;
 import com.spring.dev.home.AuthApp.repository.PropertyRepository;
 import com.spring.dev.home.AuthApp.repository.UserRepository;
-
-
 
 
 
@@ -26,30 +25,27 @@ public class PropertyServiceImpl implements IPropertyService {
 	
 	
 	
-	@Override
-	public Property save(Property property) {	
-		return aar.save(property);
-	}
-
-	
-	/* Sends a request to add advertisement
-		//public void addProperty(int idUser, Property property) {
-			//LocalDate today = LocalDate.now();
-			//String cat = property.getCategory().toString();
+	// Sends a request to add advertisement
+		public void addProperty(int idUser, Property property) {
+			LocalDate today = LocalDate.now();
+			String cat = property.getCategory().toString();
 			String cat1 = cat.substring(0, 2);
+
 			int hour = LocalDateTime.now().getHour();
 			String h = String.valueOf(hour);
 			int min = LocalDateTime.now().getMinute();
 			String m = String.valueOf(min);
 			int sec = LocalDateTime.now().getSecond();
 			String s = String.valueOf(sec);
+
 			String ref = today.toString() + cat1.toUpperCase() + h + m + s;
+
 			User u = uar.findById(idUser).get();
 			u.addProperty(property);
 			property.setRef(ref);
 			property.setStatus(false);
 			aar.save(property);
-		}*/
+		}
 		
 		// Administrator accepts advertisement
 		public void acceptProperty(int id) {
@@ -97,11 +93,95 @@ public class PropertyServiceImpl implements IPropertyService {
 			return aar.findById(id).get();
 		}
 		
-		// Search by State
+		
+		
+		
+		
+		///////////////////////////////////// Price /////////////////////////////////////////////
+		
+		public List<Property> findByPriceMinMaxPriceAsc(float pricemin,float pricemax) {
+			return aar.findByPriceMinMaxPriceAsc(pricemin, pricemax, "Available",true);
+		}
+		
+		public List<Property> findByPriceMinMaxPriceDesc(float pricemin,float pricemax) {
+			return aar.findByPriceMinMaxPriceDesc(pricemin, pricemax, "Available",true);
+		}
+		
+		public List<Property> findByPriceMinMaxSurfaceAsc(float pricemin,float pricemax) {
+			return aar.findByPriceMinMaxSurfaceAsc(pricemin, pricemax, "Available",true);
+		}
+		
+		public List<Property> findByPriceMinMaxSurfaceDesc(float pricemin,float pricemax) {
+			return aar.findByPriceMinMaxSurfaceDesc(pricemin, pricemax, "Available",true);
+		}
+		
+		public List<Property> findByPriceAndStatusTrue(float price) {
+			return aar.findByPriceAndAvailabilityAndStatusTrue(price, "Available");
+		}
+		
+		/////////////////////////////////// Surface ////////////////////////////////////////////////
+		
+		public List<Property> findBySurfaceAndStatusTrue(float surface) {
+			return aar.findBySurfaceAndAvailabilityAndStatusTrue(surface, "Available");
+		}
+		
+		public List<Property> findBySurfaceAndStatusTrueOrderByPriceAsc(float surface) {
+			return aar.findBySurfaceAndAvailabilityAndStatusTrueOrderByPriceAsc(surface, "Available");
+		}
+		
+		public List<Property> findBySurfaceAndStatusTrueOrderByPriceDesc(float surface) {
+			return aar.findBySurfaceAndAvailabilityAndStatusTrueOrderByPriceDesc(surface, "Available");
+		}
+		
+		////////////////////////////////// City //////////////////////////////////////////////////////
+		
+		public List<Property> findByCityAndStatusTrue(String city) {
+			return aar.findByCityAndAvailabilityAndStatusTrue(city, "Available");
+		}
+		
+		public List<Property> findByCityAndStatusTrueOrderByPriceAsc(String city) {
+			return aar.findByCityAndAvailabilityAndStatusTrueOrderByPriceAsc(city, "Available");
+		}
+		
+		public List<Property> findByCityAndStatusTrueOrderByPriceDesc(String city) {
+			return aar.findByCityAndAvailabilityAndStatusTrueOrderByPriceDesc(city, "Available");
+		}
+		
+		//////////////////////////////// State ////////////////////////////////////////////////////
+		
+		
 		public List<Property> findByStateAndStatusTrue(String state) {
 			return aar.findByStateAndAvailabilityAndStatusTrue(state, "Available");
 		}
 		
+		public List<Property> findByStateAndStatusTrueOrderByPriceAsc(String state) {
+			return aar.findByStateAndAvailabilityAndStatusTrueOrderByPriceAsc(state, "Available");
+		}
+		
+		public List<Property> findByStateAndStatusTrueOrderByPriceDesc(String state){
+			return aar.findByStateAndAvailabilityAndStatusTrueOrderByPriceDesc(state, "Available");
+		}
+		
+        //////////////////////////////// Rooms ////////////////////////////////////////////////////
+		
+		public List<Property> findByNbrRoomsAndStatusTrue(int nbrRooms) {
+			return aar.findByNbrRoomsAndAvailabilityAndStatusTrue(nbrRooms, "Available");
+		}
+		
+		public List<Property> findByNbrRoomsAndStatusTrueOrderByPriceAsc(int nbrRooms) {
+			return aar.findByNbrRoomsAndAvailabilityAndStatusTrueOrderByPriceAsc(nbrRooms, "Available");
+		}
+		
+		public List<Property> findByNbrRoomsAndStatusTrueOrderByPriceDesc(int nbrRooms) {
+			return aar.findByNbrRoomsAndAvailabilityAndStatusTrueOrderByPriceDesc(nbrRooms, "Available");
+		}
+		
+		public List<Property> findByNbrRoomsAndNbrFloorAndNbrBathroomsAndStatusTrue(int nbrRooms, int nbrFloor,
+				int nbrBathrooms) {
+			return aar.findByNbrRoomsAndNbrFloorAndNbrBathroomsAndAvailabilityAndStatusTrue(nbrRooms, nbrFloor,
+					nbrBathrooms, "Available");
+		}
+	    ////////////////////////////////////// Statistic ////////////////////////////////////////////////
 		
 		@Override
 		public double averagepricebystate(String state) {
@@ -117,5 +197,58 @@ public class PropertyServiceImpl implements IPropertyService {
 			return moyenne;
 		}
 		
+		
+		@Override
+		public double averagepricebycity(String city) {
+			List<Property> liste = aar.findByCityAndAvailabilityAndStatusTrue(city, "Available");
+			double moyenne = 0;
+			double prix = 0;
+			int number = liste.size();
+			for (int i = 0; i < number; i++) {
+				prix = prix + liste.get(i).getPrice();
+			}
+
+			moyenne = prix / number;
+			return moyenne;
+		}
+		
+		
+		
+		@Override
+		public double averagesurfacebystate(String state) {
+			List<Property> liste = aar.findByStateAndAvailabilityAndStatusTrue(state, "Available");
+			double moyenne = 0;
+			double prix = 0;
+			int number = liste.size();
+			for (int i = 0; i < number; i++) {
+				prix = prix + liste.get(i).getSurface();
+			}
+
+			moyenne = prix / number;
+			return moyenne;
+		}
+		
+		
+		@Override
+		public double averagesurfacebycity(String city) {
+			List<Property> liste = aar.findByCityAndAvailabilityAndStatusTrue(city, "Available");
+			double moyenne = 0;
+			double prix = 0;
+			int number = liste.size();
+			for (int i = 0; i < number; i++) {
+				prix = prix + liste.get(i).getSurface();
+			}
+
+			moyenne = prix / number;
+			return moyenne;
+		}
+		
+		
+		@Override
+		public double pricepermeterstate(String state) {
+			return averagepricebystate(state) / averagesurfacebystate(state);
+		}
+
+
 
 }

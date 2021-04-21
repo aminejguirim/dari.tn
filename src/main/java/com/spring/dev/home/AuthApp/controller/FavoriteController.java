@@ -47,12 +47,10 @@ public class FavoriteController {
 		
 		// http://localhost:8081/Dari/servlet/User/{id}/Favorite/Notification
 		// notification changed favorite assets
-		
-		// http://localhost:8081/Dari/servlet/User/{id}/Favorite/Notification
-				// notification changed favorite assets
-				@GetMapping("/User/{id}/Favorite/Notification")
-				public List<Favorite> getfavoriteswhoseassetgotupdated(@PathVariable("id") Property P) {
-					return FavoriteService.getfavoriteswhoseassetgotupdated(P);
-				}
-		
+		@GetMapping("/User/{id}/Favorite/Notification")
+		public List<Favorite> getfavoriteswhoseassetgotupdated(@PathVariable("id") Property P) {
+			return FavoriteService.getfavoriteswhoseassetgotupdated(P);
+		}
+
+
 }
